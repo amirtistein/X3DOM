@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>X3DOM page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script type='text/javascript' src='https://www.x3dom.org/download/x3dom.js'></script>
+    <link rel='stylesheet' type='text/css' href='https://www.x3dom.org/download/x3dom.css'>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #c9d6e8);
+            margin: 0;
+            padding: 2em;
+            color: #333;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 0;
+        }
+
+        x3d {
+            border: 2px solid rgb(41, 128, 185);
+            background: rgba(128, 128, 128, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            display: block;
+        }
+
+        .style {
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #coordinate {
+            font-size: 1.1em;
+            color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>New York City</h1>
+
+    <x3d width='500px' height='400px' id="x3dModel">
+        <scene>
+            <inline nameSpaceName="New York City" mapDEFToID="true" onclick='positioning(event.hitPnt)' url="NYC.x3d"></inline>
+        </scene>
+    </x3d>
+
+    <div id="coordinate" class="style">
+        <h2>Coordinate</h2>
+    </div>
+
+    <script>
+        function positioning(pos) {
+            document.getElementById('coordinate').innerHTML = `Position Clicked: (x: ${pos[0]}, y: ${pos[1]}, z: ${pos[2]})`;
+        }
+
+        const x3dModel = document.getElementById('x3dModel');
+
+        x3dModel.addEventListener('wheel', (event) => {
+            const rect = x3dModel.getBoundingClientRect();
+            const x = event.clientX - rect.left; // مختصات x نسبت به مدل
+            const y = event.clientY - rect.top;  // مختصات y نسبت به مدل
+            const z = 0; // مقدار z به عنوان 0 برای مختصات موس فرض شده است
+
+            // اطمینان از اینکه مختصات در محدوده مدل باشند
+            if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                document.getElementById('coordinate').innerHTML = `Coordinates: (x: ${x.toFixed(2)}, y: ${y.toFixed(2)}, z: ${z})`;
+            }
+        });
+    </script>
+</body>
+
+</html>
